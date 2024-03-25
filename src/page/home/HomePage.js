@@ -2,13 +2,18 @@ import {
   HomeContainer, OverlayText, HomeImg
 } from './home.styles';
 import { Button } from 'react-bootstrap';
+import logo2 from '../../assets/logo2.jpg'
+const logo = 'https://images.unsplash.com/photo-1554843894-2eb3578feb12?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8MjB8fENvY2hlc3xlbnwwfDB8fHwxNzExMDU3MTQwfDI&ixlib=rb-4.0.3&q=80&w=1080'
 
 
 export const HomePage = () => {
   return (
     <HomeContainer>
       <HomeImg
-        src="https://images.unsplash.com/photo-1554843894-2eb3578feb12?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8MjB8fENvY2hlc3xlbnwwfDB8fHwxNzExMDU3MTQwfDI&ixlib=rb-4.0.3&q=80&w=1080"
+        mobileSrc={logo2}
+        desktopSrc={logo}
+        // src="https://images.unsplash.com/photo-1554843894-2eb3578feb12?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8MjB8fENvY2hlc3xlbnwwfDB8fHwxNzExMDU3MTQwfDI&ixlib=rb-4.0.3&q=80&w=1080"
+        src={logo2}
         alt='main_logo'
       />
       <OverlayText>

@@ -15,6 +15,15 @@ export const HomeImg = styled.img`
   @media (max-width: 768px) {
     object-fit: fill;
   }
+
+  @media (min-width: 768px) {
+    content: url(${(props) => props.desktopSrc});
+  }
+
+  /* For mobile */
+  @media (max-width: 767px) {
+    content: url(${(props) => props.mobileSrc});
+  }
 `;
 
 export const OverlayText = styled.div`
