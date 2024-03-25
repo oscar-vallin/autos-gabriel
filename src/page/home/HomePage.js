@@ -1,7 +1,7 @@
 import {
   HomeContainer, OverlayText, HomeImg
 } from './home.styles';
-import { Button, Col, Container, Row} from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 
 
 export const HomePage = () => {
