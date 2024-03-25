@@ -23,7 +23,7 @@ export const CarsPage = () => {
     <Container>
       <Row>
         <Col md="12" lg="6">
-          <Card >
+          <Card style={{ marginBottom: '30px' }}>
             <Carousel>
             <Carousel.Item>
                 <img
@@ -75,7 +75,7 @@ export const CarsPage = () => {
           </Card>
         </Col>
         <Col md="12" lg="6">
-          <Card>
+          <Card style={{ marginBottom: '30px' }}>
             <Carousel>
             <Carousel.Item>
                 <img

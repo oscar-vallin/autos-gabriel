@@ -13,8 +13,8 @@ export const DescriptionPage = () => {
           Nuestra venta de coches ofrece lo siguiente:
         </p>
       </Row>
-      <Row>
-        <Col md="12" lg="6">
+      <Row style={{ marginTop: '30px' }}>
+        <Col md="12" lg="6" style={{ marginBottom: '30px' }}>
           <h2 style={{ fontWeight: 'bold' }}>
           <FontAwesomeIcon icon={faCarSide} /> Gran Variedad
           </h2>
@@ -22,7 +22,7 @@ export const DescriptionPage = () => {
             Tenemos una amplia selección de coches nuevos y usados ​​para elegir.
           </p>
         </Col>
-        <Col Col md="12" lg="6">
+        <Col Col md="12" lg="6" style={{ marginBottom: '30px' }}>
           <h2 style={{ fontWeight: 'bold' }}>
           <FontAwesomeIcon icon={faCheckCircle} /> Calidad Garantizada
           </h2>
@@ -32,7 +32,7 @@ export const DescriptionPage = () => {
         </Col>
       </Row>
       <Row>
-        <Col Col md="12" lg="6">
+        <Col Col md="12" lg="6" style={{ marginBottom: '30px' }}>
           <h2 style={{ fontWeight: 'bold' }}>
           <FontAwesomeIcon icon={faTags} /> Precios competitivos
           </h2>
