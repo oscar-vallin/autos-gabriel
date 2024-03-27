@@ -12,6 +12,7 @@ import { FooterPage } from './page/footer/FooterPage';
 import { ContactUsPage } from './page/contactus/ContactUsPage';
 import { SignUpPage } from './page/auth/AuthPage';
 import { RegisterCarPage } from './page/registerCar/RegisterCar';
+import { LocationPage } from './page/location/Location';
 
 import ProtectedRoute from './protectRoute/ProtectRoute';
 
@@ -26,6 +27,8 @@ const MainPage = () => {
       <CarsPage />
       <div style={{ marginTop: '30px' }}/>
       <ContactUsPage />
+      <div style={{ marginTop: '30px' }}/>
+      <LocationPage />
       <FooterPage />
     </div>
   );

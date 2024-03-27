@@ -83,7 +83,7 @@ export const CarsPage = () => {
 
     const encodedMessage = encodeURIComponent(message);
 
-    return `https://wa.me/whatsAppNumber?text=${encodedMessage}`;
+    return `https://wa.me/${process.env.REACT_APP_NUMBER}?text=${encodedMessage}`;
 
   }
 

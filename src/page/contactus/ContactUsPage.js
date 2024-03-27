@@ -28,7 +28,7 @@ const ContactButton = styled.a`
 
 
 export const ContactUsPage = () => {
-  const whatsappNumber = '22'
+  const whatsappNumber = process.env.REACT_APP_NUMBER
   return (
     <Section>
       <Container>
