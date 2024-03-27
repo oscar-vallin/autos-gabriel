@@ -19,9 +19,9 @@ export const HomePage = () => {
         alt='main_logo'
       />
       <OverlayText>
-        <h1>Encuentra tu coche <br></br>Perfecto</h1>
+        <h1>Encuentra tu vehículo <br></br>Perfecto</h1>
         <p>
-          Tenemos una amplia selección de coches  ​​para elegir
+          Tenemos una amplia selección de vehículos ​​para elegir
         </p>
         <Button variant="light" size="lg">
           <a style={{ textDecoration: 'none', color: '#000' }} href={`https://wa.me/${whatsappNumber}`} target="_blank" rel="noopener noreferrer">Contáctanos</a>
