@@ -1,6 +1,7 @@
 import {
   HomeContainer, OverlayText, HomeImg
 } from './home.styles';
+import { motion } from 'framer-motion';
 import { Button } from 'react-bootstrap';
 import logo2 from '../../assets/logo2.jpg'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -20,9 +21,17 @@ export const HomePage = () => {
       />
       <OverlayText>
         <h1>Encuentra tu vehículo <br></br>Perfecto</h1>
+        <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 1.5 }}
+      >
         <p>
-          Tenemos una amplia selección de vehículos ​​para elegir
+          Tenemos una amplia selección de 
+          vehículos ​​para elegir
         </p>
+        </motion.div>
         <Button variant="light" size="lg">
           <a style={{ textDecoration: 'none', color: '#000' }} href={`https://wa.me/${whatsappNumber}`} target="_blank" rel="noopener noreferrer">Contáctanos</a>
           <FontAwesomeIcon icon={faWhatsapp} style={{ marginLeft: '10px' }}/> 

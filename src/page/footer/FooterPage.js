@@ -33,6 +33,9 @@ export const  FooterPage = () => {
               <p>
                 <FontAwesomeIcon icon={faEnvelope} style={{ marginLeft: '10px' }}/> {process.env.REACT_APP_USER_EMAIL}
               </p>
+              <p>
+                Esta página web fue creada por <a href="https://www.quantum3digit.com" target="_blank" rel="noopener noreferrer">quantum3digit</a>
+              </p>
             </FooterContent>
           </Col>
         </Row>
