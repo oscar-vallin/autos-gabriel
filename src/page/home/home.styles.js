@@ -30,7 +30,7 @@ export const OverlayText = styled.div`
   position: absolute;
   display: inline;
   top: 20%;
-  left: 20%;
+  left: 17%;
   text-align: center;
 
   h1 {
