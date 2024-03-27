@@ -5,6 +5,7 @@ import { collection, addDoc } from 'firebase/firestore';
 import { Form, Button, ListGroup } from 'react-bootstrap';
 import { Message } from '../../components/message/Message';
 import styled from 'styled-components';
+import { handleLogout } from '../../firebase/authFireBase';
 import { Link } from 'react-router-dom';
 
 const StyledDiv = styled.div`
@@ -115,6 +116,9 @@ export const RegisterCarPage = () => {
       <div style={{ marginBottom: '40px' }}/>
       <Link to="/">
           Pagina Principal
+      </Link>
+      <Link onClick={handleLogout} variant="secondary" style={{ marginLeft: '20px' }}>
+        Salir de la sesión
       </Link>
     </StyledDiv>
   );

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Form, Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { singin } from '../../firebase/authFireBase';
 import { useNavigate } from 'react-router-dom';
@@ -72,6 +73,9 @@ export const SignUpPage = () => {
         <Button variant="primary" type="submit">
           Sign Up
         </Button>
+        <Link to="/" style={{ marginLeft: '20px' }}>
+          Pagina Principal
+        </Link>
       </Form>
     </StyledContainer>
   );
