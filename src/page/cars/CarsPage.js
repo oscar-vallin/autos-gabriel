@@ -67,6 +67,7 @@ export const CarsPage = () => {
   const handleClose = () => setShow(false);
 
   const handleShow = (carName, price) => {  
+    console.log(carName, price)
     setFormData({
       ...formData,
       carName,
@@ -80,18 +81,10 @@ export const CarsPage = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    console.log(formData);
-    // Submit the form data
-    handleClose();
-  };
 
   const whatsappLink = () => {
     const message = JSON.stringify(formData);
-
     const encodedMessage = encodeURIComponent(message);
-
     return `https://wa.me/${process.env.REACT_APP_NUMBER}?text=${encodedMessage}`;
 
   };
@@ -156,7 +149,7 @@ export const CarsPage = () => {
           <Modal.Title>Información del Usuario</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <StyledForm onSubmit={handleSubmit}>
+          <StyledForm>
             <Form.Group className="mb-3">
               <Form.Label>Nombre</Form.Label>
               <Form.Control
