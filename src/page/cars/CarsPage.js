@@ -65,8 +65,13 @@ export const CarsPage = () => {
   };
 
   const handleClose = () => setShow(false);
-  const handleShow = () => {  
 
+  const handleShow = (carName, price) => {  
+    setFormData({
+      ...formData,
+      carName,
+      price,
+    });
     setShow(true);
   }
 
@@ -129,7 +134,7 @@ export const CarsPage = () => {
             <Button
               style={{ margin: '0 auto', marginBottom: '20px', fontWeight: '400' }}
               variant="info"
-              onClick={handleShow}
+              onClick={() => handleShow(car.name, car.price)}
             >
               Estoy Interesado
               <i className="fa fa-phone" style={{ marginLeft: '10px' }}></i> 
