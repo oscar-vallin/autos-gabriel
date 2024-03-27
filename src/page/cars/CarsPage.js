@@ -13,6 +13,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDollarSign } from '@fortawesome/free-solid-svg-icons';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 
 import { collection, getDocs } from 'firebase/firestore';
 import { firestore } from '../../firebase/firebase';
@@ -64,7 +65,10 @@ export const CarsPage = () => {
   };
 
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const handleShow = () => {  
+
+    setShow(true);
+  }
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -85,7 +89,7 @@ export const CarsPage = () => {
 
     return `https://wa.me/${process.env.REACT_APP_NUMBER}?text=${encodedMessage}`;
 
-  }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -144,12 +148,12 @@ export const CarsPage = () => {
       </Row>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Car Information</Modal.Title>
+          <Modal.Title>Información del Usuario</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <StyledForm onSubmit={handleSubmit}>
             <Form.Group className="mb-3">
-              <Form.Label>Name</Form.Label>
+              <Form.Label>Nombre</Form.Label>
               <Form.Control
                 type="text"
                 name="name"
@@ -159,7 +163,7 @@ export const CarsPage = () => {
               />
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Phone Number</Form.Label>
+              <Form.Label>Número</Form.Label>
               <Form.Control
                 type="tel"
                 name="phoneNumber"
@@ -168,29 +172,21 @@ export const CarsPage = () => {
                 required
               />
             </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Car Name</Form.Label>
-              <Form.Control
-                type="text"
-                name="carName"
-                value={formData.carName}
-                onChange={handleChange}
-                required
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Price</Form.Label>
-              <Form.Control
-                type="number"
-                name="price"
-                value={formData.price}
-                onChange={handleChange}
-                required
-              />
-            </Form.Group>
-            <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
-              Send Message via WhatsApp
-            </a>
+            <Button>
+              <a
+                href={whatsappLink()}
+                target="_blank"
+                rel="noopener
+                noreferrer"
+                style={{ 
+                  color: '#fff',
+                  textDecoration: 'none',
+                 }}
+                >
+                Ir a WhatsApp
+                <FontAwesomeIcon icon={faWhatsapp} style={{ marginLeft: '10px' }}/> 
+              </a>
+            </Button>
           </StyledForm>
         </Modal.Body>
       </Modal>

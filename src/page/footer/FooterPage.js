@@ -2,6 +2,11 @@ import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import styled from 'styled-components';
 
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
+import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
+
 // Styled component for the footer
 const StyledFooter = styled.footer`
   background-color: #f8f9fa;
@@ -22,10 +27,12 @@ export const  FooterPage = () => {
           <Col>
             <FooterContent>
               <p>&copy; 2024 Venta de coches Gabriel. Todos los derechos reservados.</p>
-              <p>Siguenos en
-              <a href="https://twitter.com"> Twitter </a>,
-              <a href="https://facebook.com"> Facebook </a>, y 
-              <a href="https://instagram.com"> Instagram </a>.</p>
+              <p>
+              <FontAwesomeIcon icon={faWhatsapp} style={{ marginLeft: '10px' }}/> + {process.env.REACT_APP_NUMBER}
+              </p>
+              <p>
+                <FontAwesomeIcon icon={faEnvelope} style={{ marginLeft: '10px' }}/> {process.env.REACT_APP_USER_EMAIL}
+              </p>
             </FooterContent>
           </Col>
         </Row>

@@ -1,6 +1,9 @@
 
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col, Button } from 'react-bootstrap';
 import styled from 'styled-components';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMapMarkedAlt } from '@fortawesome/free-solid-svg-icons';
 
 const ResponsiveMapWrapper = styled.div`
   position: relative;
@@ -20,6 +23,10 @@ export const ResponsiveIframe = styled.iframe`
 `;
 
 export const LocationPage = () => {
+  const openGoogleMaps = () => {
+    const url = 'https://maps.app.goo.gl/VJESjSCgBzp3NTNd8';
+    window.open(url, '_blank');
+  };
   return (
     <Container>
        <Row>
@@ -41,6 +48,15 @@ export const LocationPage = () => {
 
             </ResponsiveIframe>
           </ResponsiveMapWrapper>
+        </Col>
+      </Row>
+      <Row>
+        <Col xs={12} sm={8} md={6} lg={4} >
+          <Button
+            onClick={openGoogleMaps}
+            >
+              Abrir en Google Maps <FontAwesomeIcon icon={faMapMarkedAlt} style={{ marginLeft: '10px' }}/>
+            </Button>
         </Col>
       </Row>
     </Container>

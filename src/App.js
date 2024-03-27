@@ -13,6 +13,7 @@ import { ContactUsPage } from './page/contactus/ContactUsPage';
 import { SignUpPage } from './page/auth/AuthPage';
 import { RegisterCarPage } from './page/registerCar/RegisterCar';
 import { LocationPage } from './page/location/Location';
+import { NotFoundPage } from './page/notFoundPage/NotFoundPage';
 
 import ProtectedRoute from './protectRoute/ProtectRoute';
 
@@ -48,6 +49,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route path="*" element={<NotFoundPage />}/>
       </Routes>
     </Router>
   );

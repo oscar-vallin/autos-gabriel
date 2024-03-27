@@ -2,6 +2,9 @@ import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import styled from 'styled-components';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
+
 const Section = styled.section`
   padding: 40px 0;
   text-align: center;
@@ -40,7 +43,7 @@ export const ContactUsPage = () => {
             </SubText>
             <ContactButton href={`https://wa.me/${whatsappNumber}`} target="_blank">
               Contáctanos
-              <i className="fa fa-phone" style={{ marginLeft: '10px' }}></i>
+              <FontAwesomeIcon icon={faWhatsapp} style={{ marginLeft: '10px' }}/> 
             </ContactButton>
           </Col>
         </Row>
