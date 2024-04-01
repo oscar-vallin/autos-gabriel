@@ -98,6 +98,7 @@ export const CarsPage = () => {
       message += ` Precio: ${price}`;
     }
     const encodedMessage = encodeURIComponent(message);
+    setShow(false);
     return `https://wa.me/${process.env.REACT_APP_NUMBER}?text=${encodedMessage}`;
 
   };
