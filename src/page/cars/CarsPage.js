@@ -67,7 +67,6 @@ export const CarsPage = () => {
   const handleClose = () => setShow(false);
 
   const handleShow = (carName, price) => {  
-    console.log(carName, price)
     setFormData({
       ...formData,
       carName,
@@ -98,7 +97,6 @@ export const CarsPage = () => {
       message += ` Precio: ${price}`;
     }
     const encodedMessage = encodeURIComponent(message);
-    setShow(false);
     return `https://wa.me/${process.env.REACT_APP_NUMBER}?text=${encodedMessage}`;
 
   };
@@ -106,7 +104,6 @@ export const CarsPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       const carsData = await fetchCars();
-      console.log(carsData)
       setCars(carsData);
     };
     fetchData();
@@ -194,6 +191,7 @@ export const CarsPage = () => {
                   color: '#fff',
                   textDecoration: 'none',
                  }}
+                 onClick={() => setShow(false)}
                 >
                 Ir a WhatsApp
                 <FontAwesomeIcon icon={faWhatsapp} style={{ marginLeft: '10px' }}/> 
