@@ -4,11 +4,13 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { singin } from '../../firebase/authFireBase';
 import { useNavigate } from 'react-router-dom';
+import { Message } from '../../components/message/Message';
 import { useAuth } from '../../context/authContext';
 
 
 const StyledContainer = styled(Container)`
-  max-width: 400px;
+  max-width: 600px;
+  width: 100%;
   margin-top: 50px;
 `;
 
@@ -19,6 +21,7 @@ export const SignUpPage = () => {
     username: '',
     password: '',
   });
+  const [errorMsg, setErrMsg] = useState('');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -29,13 +32,13 @@ export const SignUpPage = () => {
     e.preventDefault();
     // Handle form submission here
     const { password, username } = formData;
-    try {
-      await singin(username, password);
-      // Redirect to a protected route after successful sign-in
-    } catch (error) {
-      console.error('Error signing in:', error);
-    }
-    console.log('Form data:');
+      const statusUser = singin(username, password);
+      if (statusUser) {
+        setErrMsg("");
+      } else {
+        setErrMsg("Las credenciales son incorrectas");
+      }
+
   };
 
   useEffect(() => {
@@ -46,32 +49,39 @@ export const SignUpPage = () => {
 
   return (
     <StyledContainer>
-      <h2>Sign Up</h2>
+      {errorMsg && <Message type="error">{errorMsg}</Message>}
+      <Message
+        type="warning"
+      >
+        Está página solamente es para usuarios con credenciales,
+        sino cuentas con ellas da click en "Pagina Principal"
+      </Message>
+      <h2>Auth</h2>
       <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3" controlId="formUsername">
-          <Form.Label>Username</Form.Label>
+          <Form.Label>Nombre de Usuario</Form.Label>
           <Form.Control
             type="text"
             name="username"
-            placeholder="Enter username"
+            placeholder="Ingrese nombre de usuario"
             value={formData.username}
             onChange={handleChange}
           />
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="formPassword">
-          <Form.Label>Password</Form.Label>
+          <Form.Label>Contraseña</Form.Label>
           <Form.Control
             type="password"
             name="password"
-            placeholder="Password"
+            placeholder="Contraseña"
             value={formData.password}
             onChange={handleChange}
           />
         </Form.Group>
 
         <Button variant="primary" type="submit">
-          Sign Up
+          Ingresar
         </Button>
         <Link to="/" style={{ marginLeft: '20px' }}>
           Pagina Principal

@@ -84,7 +84,19 @@ export const CarsPage = () => {
 
   const whatsappLink = () => {
     const { name, phoneNumber, carName, price } = formData;
-    const message = `Nombre: ${name}, Numero: ${phoneNumber}, vehículo: ${carName}, Precio: ${price}`;
+    let message = '';
+    if (name) {
+      message += `Nombre: ${name}\n`;
+    }
+    if (phoneNumber) {
+      message += ` Numero: ${phoneNumber}\n`;
+    }
+    if (carName){
+      message += ` Vehículo: ${carName}\n`;
+    }
+    if (price) {
+      message += ` Precio: ${price}`;
+    }
     const encodedMessage = encodeURIComponent(message);
     return `https://wa.me/${process.env.REACT_APP_NUMBER}?text=${encodedMessage}`;
 

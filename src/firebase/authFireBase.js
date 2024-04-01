@@ -20,10 +20,10 @@ export const singin = (email, password) => {
     // User signed in
     const user = userCredential.user;
     console.log('User logged in:', user);
+    return true
   })
   .catch((error) => {
-    // Handle errors
-    console.error('Error logging in:', error);
+    return false
   })};
 
   export const handleLogout = async () => {

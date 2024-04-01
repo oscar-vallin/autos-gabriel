@@ -7,8 +7,19 @@ const StyledAlert = styled(Alert)`
 `;
 
 export const Message = ({ type, children }) => {
+
+  const typeOfAlert = () => {
+    switch (type) {
+      case 'error':
+        return 'danger';
+      case 'warning':
+        return 'warning'
+      default:
+        return 'success';
+    }
+  }
   return (
-    <StyledAlert  variant={type === 'error' ? 'danger' : 'success'}>
+    <StyledAlert  variant={typeOfAlert()}>
       <h4>{children}</h4>
     </StyledAlert>
   );

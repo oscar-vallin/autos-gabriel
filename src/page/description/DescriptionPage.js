@@ -34,7 +34,7 @@ export const DescriptionPage = () => {
       <Row>
         <Col Col md="12" lg="6" style={{ marginBottom: '30px' }}>
           <h2 style={{ fontWeight: 'bold' }}>
-          <FontAwesomeIcon icon={faTags} /> Precios competitivos
+          <FontAwesomeIcon icon={faTags} /> Precios competitivos y Financiamientos
           </h2>
           <p>
           Ofrecemos los mejores precios en nuestros coches para que puedas encontrar el mejor trato.
