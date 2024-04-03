@@ -4,6 +4,13 @@ import styled from 'styled-components';
 
 const StyledAlert = styled(Alert)`
   margin-top: 20px;
+  max-width: 500px;
+  margin: 0 auto;
+  margin-bottom: 30px;
+
+  h4 {
+    text-align: center;
+  }
 `;
 
 export const Message = ({ type, children }) => {

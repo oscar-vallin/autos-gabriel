@@ -7,11 +7,21 @@ import { useNavigate } from 'react-router-dom';
 import { Message } from '../../components/message/Message';
 import { useAuth } from '../../context/authContext';
 
-
 const StyledContainer = styled(Container)`
   max-width: 600px;
   width: 100%;
   margin-top: 50px;
+`;
+
+const TogglePasswordText = styled.div`
+  color: #007bff;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 5px;
+  margin-bottom: 30px;
+  &:hover {
+    text-decoration: underline;
+  }
 `;
 
 export const SignUpPage = () => {
@@ -22,6 +32,7 @@ export const SignUpPage = () => {
     password: '',
   });
   const [errorMsg, setErrMsg] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -41,11 +52,15 @@ export const SignUpPage = () => {
 
   };
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   useEffect(() => {
     if (currentUser) {
       navigate('/registercar');
     }
-  }, [currentUser, navigate])
+  }, [currentUser, navigate]);
 
   return (
     <StyledContainer>
@@ -56,7 +71,7 @@ export const SignUpPage = () => {
         Está página solamente es para usuarios con credenciales,
         sino cuentas con ellas da click en "Pagina Principal"
       </Message>
-      <h2>Auth</h2>
+      <h2>Autenticación</h2>
       <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3" controlId="formUsername">
           <Form.Label>Nombre de Usuario</Form.Label>
@@ -68,18 +83,19 @@ export const SignUpPage = () => {
             onChange={handleChange}
           />
         </Form.Group>
-
         <Form.Group className="mb-3" controlId="formPassword">
           <Form.Label>Contraseña</Form.Label>
           <Form.Control
-            type="password"
+            type={showPassword ? 'text' : 'password'}
             name="password"
             placeholder="Contraseña"
             value={formData.password}
             onChange={handleChange}
           />
         </Form.Group>
-
+        <TogglePasswordText onClick={togglePasswordVisibility}>
+          {showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+        </TogglePasswordText>
         <Button variant="primary" type="submit">
           Ingresar
         </Button>
