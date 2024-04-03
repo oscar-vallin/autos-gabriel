@@ -226,13 +226,14 @@ export const RegisterCarPage = () => {
             </Card>
       </Col>
       </Row>
-      <div style={{ marginBottom: '40px' }}/>
+      <div style={{ marginBottom: '30px', marginTop: '30px' }}>
       <Link to="/">
           Pagina Principal
       </Link>
       <Link onClick={handleLogout} variant="secondary" style={{ marginLeft: '20px' }}>
         Salir de la sesión
       </Link>
+      </div>
     </StyledDiv>
   );
 };
