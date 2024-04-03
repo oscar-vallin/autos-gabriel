@@ -34,6 +34,11 @@ export const CarsPage = () => {
   const { currentUser } = useAuth();
   const [uploadError, setUploadError] = useState(false);
   const [uploadSuccess, setUploadSuccess] = useState(false);
+  const [currentRemoveCarData, setCurrentRemoveCarData] = useState({
+    id: '',
+    path: '',
+  });
+  const [removeCarModal, setRemoveCarModal] = useState(false);
   const [show, setShow] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -51,18 +56,36 @@ export const CarsPage = () => {
     return cars;
   };
 
-  const removeCar = (id, path) => {
+  const openRemoveCarModal = async (id, path) => {
+    setRemoveCarModal(true);
+    setCurrentRemoveCarData({
+      id,
+      path
+    });
+    
+  };
+
+  const removeCar = async () => {
+    const { id, path } = currentRemoveCarData;
     const removedCar = deleteCarAndImages(id, path);
+    setCurrentRemoveCarData({
+      id: '',
+      path: '',
+    });
 
     if (removedCar) {
-      setUploadSuccess(true);
-      setTimeout(() => {
-        window.location.reload();
-      }, 3000);
+      setUploadSuccess(true)
+      setTimeout(async () => {
+        const cars = await fetchCars();
+        setCars(cars);
+        setRemoveCarModal(false);
+        setUploadSuccess(false);
+      }, 2000)
     } else {
       setUploadError(true);
+      setRemoveCarModal(false);
     }
-  };
+  }
 
   const handleClose = () => setShow(false);
 
@@ -109,9 +132,17 @@ export const CarsPage = () => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    if (!removeCarModal){
+      setCurrentRemoveCarData({
+        id: '',
+        path: '',
+      });
+    }
+  }, [removeCarModal]);
+
   return (
     <Container>
-      {uploadSuccess && <Message type="success">El vehículo se elimino correctamente</Message>}
       {uploadError && <Message type="error">Hubo un error al eliminar el vehículo</Message>}
       <Row>
         {cars.map((car, index) => (
@@ -146,7 +177,7 @@ export const CarsPage = () => {
             {currentUser && <Button
               variant="danger"
               style={{ margin: '0 auto', marginBottom: '20px', fontWeight: '400' }}
-              onClick={() => removeCar(car.id, car.nameDirectory)}
+              onClick={() => openRemoveCarModal(car.id, car.nameDirectory)}
             >
               Borrar
               <FontAwesomeIcon icon={faTrash} style={{ marginLeft: '10px' }}/>
@@ -198,6 +229,24 @@ export const CarsPage = () => {
               </a>
             </Button>
           </StyledForm>
+        </Modal.Body>
+      </Modal>
+      <Modal show={removeCarModal} onHide={() => setRemoveCarModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>¿Estás seguro de eliminar este Veihículo</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+        {uploadSuccess && <Message type="success">El vehículo se eliminó correctamente</Message>}
+            <Button onClick={removeCar}>
+              Eliminar
+            </Button>
+            <Button
+              variant="secondary"
+              onClick={() => setRemoveCarModal(false)}
+              style={{ marginLeft: '20px' }}
+            >
+              Cancelar
+            </Button>
         </Modal.Body>
       </Modal>
     </Container>

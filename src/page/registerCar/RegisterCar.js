@@ -2,7 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { storage, firestore } from '../../firebase/firebase'; // Adjust the import path as needed
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { collection, addDoc } from 'firebase/firestore';
-import { Form, Button, ListGroup, Container, Row, Col, Card, Carousel } from 'react-bootstrap';
+import {
+  Form,
+  Button,
+  ListGroup,
+  Container,
+  Row,
+  Col,
+  Card,
+  Carousel,
+  Spinner,
+} from 'react-bootstrap';
 import { Message } from '../../components/message/Message';
 import styled from 'styled-components';
 import { handleLogout } from '../../firebase/authFireBase';
@@ -47,14 +57,17 @@ export const RegisterCarPage = () => {
   const handleUpload = async () => {
     setUploading(true);
     const imageUrls = [];
+    const randomNum = Math.round(Math.random(0,100)*100);
     // const userId = uuidv4();
     try {
       for (const image of images) {
-        const imageRef = await ref(storage, `cars/${nameDirectory}/${image.name}`);
+        const imageRef = await ref(storage, `cars/${nameDirectory}_${randomNum}/${image.name}`);
         await uploadBytes(imageRef, image);
         const imageUrl = await getDownloadURL(imageRef);
         imageUrls.push(imageUrl);
       }
+
+
       
       // Save the car data to Firestore
       const carDoc = {
@@ -62,15 +75,19 @@ export const RegisterCarPage = () => {
         price: price,
         description: description,
         images: imageUrls,
-        nameDirectory,
+        nameDirectory: `${nameDirectory}_${randomNum}`,
       };
       
       await addDoc(collection(firestore, `cars/`), carDoc);
       setUploading(false);
       setUploadSuccess(true);
+      setTimeout(() => {
+        setUploadSuccess(false);
+      }, 3000);
       setUploadError(false);
 
       setImages([]);
+      setCurrentImgs([]);
       setName('');
       setNameDirectory('');
       setDescription('');
@@ -125,10 +142,24 @@ export const RegisterCarPage = () => {
 
   return (
     <StyledDiv>
-      <Message type="info">Todos los campos son obligatorios</Message>
-      {uploadSuccess && <Message type="success">Los datos de subieron correctamente</Message>}
+      {!uploadSuccess && !uploading && <Message type="info">Todos los campos son obligatorios</Message>}
+      {uploadSuccess && <Message type="success">Los datos se subieron correctamente</Message>}
       {uploadError && <Message type="error">Hubo un error al subir la información!</Message>}
-      <Row>
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        { uploading && <Spinner
+          style={{ 
+            color: 'blue',
+            fontSize: '100px',
+            width: '5rem',
+            height: '5rem',
+            }} 
+            animation="border"
+            role="status"
+          >
+          <span className="visually-hidden">Loading...</span>
+        </Spinner>}
+      </div>
+      {!uploading && <Row>
       <Col md="12" lg="6">
       <Form.Group>
       <Form.Label>Nombre del vehículo</Form.Label>
@@ -225,15 +256,15 @@ export const RegisterCarPage = () => {
             </Button>
             </Card>
       </Col>
-      </Row>
-      <div style={{ marginBottom: '30px', marginTop: '30px' }}>
+      </Row>}
+     {!uploading && <div style={{ marginBottom: '30px', marginTop: '30px' }}>
       <Link to="/">
           Pagina Principal
       </Link>
       <Link onClick={handleLogout} variant="secondary" style={{ marginLeft: '20px' }}>
         Salir de la sesión
       </Link>
-      </div>
+      </div>}
     </StyledDiv>
   );
 };

@@ -26,7 +26,10 @@ export const  FooterPage = () => {
         <Row>
           <Col>
             <FooterContent>
-              <p>&copy; 2024 Venta de coches Gabriel. Todos los derechos reservados.</p>
+              <p>&copy; 2024 Global Automotriz. Compra Venta y Consignación.</p>
+              <p>
+                
+              </p>
               <p>
               <FontAwesomeIcon icon={faWhatsapp} style={{ marginLeft: '10px' }}/> + {process.env.REACT_APP_NUMBER}
               </p>

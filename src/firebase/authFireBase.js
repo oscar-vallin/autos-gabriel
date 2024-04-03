@@ -14,17 +14,15 @@ import {  signInWithEmailAndPassword, signOut} from 'firebase/auth';
 //     });
 // };
 
-export const singin = (email, password) => {
-  signInWithEmailAndPassword(auth, email, password)
-  .then((userCredential) => {
-    // User signed in
-    const user = userCredential.user;
-    console.log('User logged in:', user);
-    return true
-  })
-  .catch((error) => {
+export const singin = async (email, password) => {
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+    return true;
+    
+  } catch (error) {
     return false
-  })};
+  }
+}
 
   export const handleLogout = async () => {
     try {

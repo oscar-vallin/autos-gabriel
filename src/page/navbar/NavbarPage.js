@@ -2,6 +2,8 @@ import styled from 'styled-components';
 import { Navbar } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
+import logo from '../../assets/logoLast _1.png';
+
 const NavbarStyled = styled(Navbar)`
   background-color: transparent;
   position: absolute;
@@ -42,7 +44,13 @@ export const NavbarPage = () => {
   return (
     <NavbarStyled>
       <Navbar.Brand>
-         <Link to="/auth"><h2 >Autos Gabriel</h2></Link>
+         <Link to="/auth">
+          <img 
+            src={logo}
+            alt='logo'
+            width='300'
+          />
+         </Link>
         </Navbar.Brand>
       {/* <Nav  className="mr-auto" style={{ marginLeft: '10px' }}>
         <Nav.Link>
