@@ -3,7 +3,7 @@ import {
   HomeContainer, OverlayText,
 } from './home.styles';
 import { motion } from 'framer-motion';
-import { Button } from 'react-bootstrap';
+import { Button, Spinner } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 
@@ -13,7 +13,20 @@ export const HomePage = () => {
   const whatsappNumber = process.env.REACT_APP_NUMBER
   return (
     <HomeContainer>
-      <Suspense  fallback={<div>Loading...</div>}>
+      <Suspense  fallback={<div>
+        <Spinner
+          style={{ 
+            color: 'blue',
+            fontSize: '100px',
+            width: '5rem',
+            height: '5rem',
+            }} 
+            animation="border"
+            role="status"
+          >
+          <span className="visually-hidden">Loading...</span>
+        </Spinner>
+      </div>}>
         <MainImage />
       </Suspense>
       <OverlayText>
