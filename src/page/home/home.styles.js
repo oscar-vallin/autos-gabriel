@@ -8,23 +8,6 @@ export const HomeContainer = styled.div`
   overflow: hidden;
 `;
 
-export const HomeImg = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  @media (max-width: 768px) {
-    object-fit: fill;
-  }
-
-  @media (min-width: 768px) {
-    content: url(${(props) => props.desktopSrc});
-  }
-
-  /* For mobile */
-  @media (max-width: 767px) {
-    content: url(${(props) => props.mobileSrc});
-  }
-`;
 
 export const OverlayText = styled.div`
   position: absolute;
