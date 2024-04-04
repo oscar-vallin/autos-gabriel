@@ -13,13 +13,13 @@ export const HomePage = () => {
   const whatsappNumber = process.env.REACT_APP_NUMBER
   return (
     <HomeContainer>
-      <Suspense  fallback={<div>
+      <Suspense  fallback={<div  style={{ display: 'flex', justifyContent: 'center', marginTop: '50px' }}>
         <Spinner
           style={{ 
             color: 'blue',
             fontSize: '100px',
-            width: '5rem',
-            height: '5rem',
+            width: '2rem',
+            height: '2rem',
             }} 
             animation="border"
             role="status"
