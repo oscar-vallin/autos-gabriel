@@ -21,6 +21,8 @@ export const Message = ({ type, children }) => {
         return 'danger';
       case 'warning':
         return 'warning'
+      case 'info':
+        return 'info'
       default:
         return 'success';
     }

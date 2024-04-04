@@ -83,7 +83,7 @@ export const RegisterCarPage = () => {
       setUploadSuccess(true);
       setTimeout(() => {
         setUploadSuccess(false);
-      }, 3000);
+      }, 5000);
       setUploadError(false);
 
       setImages([]);
@@ -226,7 +226,8 @@ export const RegisterCarPage = () => {
         ))}
       </ListGroup>
       </Col>
-      <Col md="12" lg="6" style={{ marginTop: '30px' }}>
+      <Col md="12" lg="6" style={{ marginTop: '20px' }}>
+        <h5>Así se va mostrar el coche en la pagina principal</h5>
       <Card style={{ marginBottom: '30px' }}>
             <Carousel>
               {currentImgs.map((imageCar, indexCar) => (
