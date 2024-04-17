@@ -1,4 +1,5 @@
 import React, { Suspense } from 'react';
+import { Helmet } from 'react-helmet';
 import {
   HomeContainer, OverlayText,
 } from './home.styles';
@@ -13,6 +14,11 @@ export const HomePage = () => {
   const whatsappNumber = process.env.REACT_APP_NUMBER
   return (
     <HomeContainer>
+      <Helmet>
+      <title>Global Automotriz - Encuentra tu coche ideal</title>
+        <meta name="description" content="Explora nuestra amplia selección de coches. Encuentra ofertas en coches nuevos y usados en Global Automotriz." />
+        <meta name="keywords" content="coches, venta de coches, coches usados, coches nuevos" />
+      </Helmet>
       <Suspense  fallback={<div  style={{ display: 'flex', justifyContent: 'center', marginTop: '50px' }}>
         <Spinner
           style={{ 

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 
-export const HomeContainer = styled.div`
+export const HomeContainer = styled.header`
   position: relative;
   width: 100%;
   height: 100vh;
