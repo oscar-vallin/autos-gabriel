@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { Navbar } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
-import logo from '../../assets/logoLast _1.png';
+// import logo from '../../assets/logoLast _1.png';
 
 const NavbarStyled = styled(Navbar)`
   background-color: transparent;
