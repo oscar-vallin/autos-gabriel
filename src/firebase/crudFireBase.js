@@ -1,6 +1,6 @@
 import { firestore, storage} from './firebase';
 import { ref, listAll, deleteObject } from 'firebase/storage';
-import { doc, deleteDoc } from 'firebase/firestore';
+import { doc, deleteDoc, updateDoc } from 'firebase/firestore';
 
 const deleteCar = async (carId) => {
   const carDocRef = doc(firestore, 'cars', carId);
@@ -17,6 +17,23 @@ const deleteCarImages = async (carId, path) => {
     await deleteObject(itemRef);
   }
 };
+
+export const editCarStore = async (dataCar) => {
+  
+  const documentRef = doc(firestore, "cars", dataCar.id);
+  const { name, description, price } = dataCar;
+  try {
+    await updateDoc(documentRef, {
+      name,
+      price,
+      description, 
+    });
+    return true;
+  } catch (error) {
+    console.error("Error updating document: ", error);
+    return false;
+  }
+}
 
 
 export const deleteCarAndImages = async (carId, path) => {

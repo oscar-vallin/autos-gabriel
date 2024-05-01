@@ -12,12 +12,12 @@ import {
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDollarSign } from '@fortawesome/free-solid-svg-icons';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
 import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 
 import { collection, getDocs } from 'firebase/firestore';
 import { firestore } from '../../firebase/firebase';
-import { deleteCarAndImages } from '../../firebase/crudFireBase';
+import { deleteCarAndImages, editCarStore } from '../../firebase/crudFireBase';
 
 import { useAuth } from '../../context/authContext';
 
@@ -38,7 +38,16 @@ export const CarsPage = () => {
     id: '',
     path: '',
   });
+  const [currentEditImages, setCurrentEditImages] = useState([])
+  const [newEditData, setNewEditData] = useState({
+    name: '',
+    price: '',
+    description: '',
+    id: '',
+  })
   const [removeCarModal, setRemoveCarModal] = useState(false);
+  const [editCarModal, setEditCarModal] = useState(false);
+
   const [show, setShow] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -65,6 +74,17 @@ export const CarsPage = () => {
     
   };
 
+  const openEditCarModal = async (car) => {
+    setEditCarModal(true);
+    setNewEditData({
+      description: car.description,
+      name: car.name,
+      price: car.price,
+      id: car.id,
+    });
+    setCurrentEditImages(car.images);
+  };
+
   const removeCar = async () => {
     const { id, path } = currentRemoveCarData;
     const removedCar = deleteCarAndImages(id, path);
@@ -85,7 +105,26 @@ export const CarsPage = () => {
       setUploadError(true);
       setRemoveCarModal(false);
     }
+  };
+
+  const editCar = () => {
+    const edit = editCarStore(newEditData);
+    setCurrentEditImages([]);
+
+    if (edit) {
+      setUploadSuccess(true)
+      setTimeout(async () => {
+        const cars = await fetchCars();
+        setCars(cars);
+        setEditCarModal(false);
+        setUploadSuccess(false);
+      }, 2000)
+    } else {
+      setUploadError(true);
+      setEditCarModal(false);
+    }
   }
+
 
   const handleClose = () => setShow(false);
 
@@ -132,6 +171,7 @@ export const CarsPage = () => {
     fetchData();
   }, []);
 
+
   useEffect(() => {
     if (!removeCarModal){
       setCurrentRemoveCarData({
@@ -140,6 +180,17 @@ export const CarsPage = () => {
       });
     }
   }, [removeCarModal]);
+
+  useEffect(() => {
+    if (!editCarModal){
+      setNewEditData({
+        id: '',
+        description: '',
+        name: '',
+        price: '',
+      });
+    }
+  }, [editCarModal]);
 
   return (
     <Container>
@@ -174,6 +225,7 @@ export const CarsPage = () => {
               Estoy Interesado
               <i className="fa fa-phone" style={{ marginLeft: '10px' }}></i> 
             </Button>
+            <div style={{display: 'flex'}}>
             {currentUser && <Button
               variant="danger"
               style={{ margin: '0 auto', marginBottom: '20px', fontWeight: '400' }}
@@ -182,6 +234,15 @@ export const CarsPage = () => {
               Borrar
               <FontAwesomeIcon icon={faTrash} style={{ marginLeft: '10px' }}/>
             </Button>}
+            {currentUser && <Button
+              variant="secondary"
+              style={{ margin: '0 auto', marginBottom: '20px', fontWeight: '400' }}
+              onClick={() => openEditCarModal(car)}
+            >
+              Editar
+              <FontAwesomeIcon icon={faEdit} style={{ marginLeft: '10px' }}/>
+            </Button>}
+            </div>
             </Card>
           </Col>
         ))}
@@ -233,7 +294,7 @@ export const CarsPage = () => {
       </Modal>
       <Modal show={removeCarModal} onHide={() => setRemoveCarModal(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>¿Estás seguro de eliminar este Veihículo</Modal.Title>
+          <Modal.Title>¿Estás seguro de eliminar este Veihículo?</Modal.Title>
         </Modal.Header>
         <Modal.Body>
         {uploadSuccess && <Message type="success">El vehículo se eliminó correctamente</Message>}
@@ -248,6 +309,66 @@ export const CarsPage = () => {
               Cancelar
             </Button>
         </Modal.Body>
+      </Modal>
+      <Modal  show={editCarModal} onHide={() => setEditCarModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Editar Vehículo</Modal.Title>
+        </Modal.Header>
+          {uploadSuccess && <Message type="success">El vehículo se editó correctamente</Message>}
+          <Card>
+            <Carousel>
+            {currentEditImages.map((imageCar, indexCar) => (
+                <Carousel.Item key={indexCar}>
+                  <img
+                    style={{margin: '0 auto'}}
+                    className="d-block w-50"
+                    src={imageCar}
+                    alt="First slide"
+                  />
+                </Carousel.Item>
+              ))}
+              </Carousel>
+            <Card.Body>
+              <Card.Text>
+                <Form.Label htmlFor="carname">Nombre</Form.Label>
+                <Form.Control
+                  style={{ marginBottom: '15px', border: '3px solid rgba(13,110,253,.25)' }} 
+                  type='text'
+                  id="carname"
+                  value={newEditData.name}
+                  onChange={(e) => setNewEditData({...newEditData,name: e.target.value})}
+                  />
+                  <Form.Label htmlFor="cardescription">Descripción</Form.Label>
+                  <Form.Control
+                    style={{ marginBottom: '15px', border: '3px solid rgba(13,110,253,.25)' }} 
+                  as="textarea"
+                  value={newEditData.description}
+                  id="cardescription"
+                  onChange={(e) => setNewEditData({...newEditData,description: e.target.value})}
+                  />
+                  <Form.Label htmlFor="cardprice">Precio</Form.Label>
+                  <Form.Control
+                    style={{ marginBottom: '15px', border: '3px solid rgba(13,110,253,.25)' }} 
+                  type='text'
+                  value={newEditData.price}
+                  id='cardprice'
+                  onChange={(e) => setNewEditData({...newEditData,price: e.target.value})}
+                  />
+              </Card.Text>
+            </Card.Body>
+            <Card.Footer>
+            <Button onClick={editCar}>
+              Editar
+            </Button>
+            <Button
+              variant="secondary"
+              onClick={() => setEditCarModal(false)}
+              style={{ marginLeft: '20px' }}
+              >
+              Cancelar
+            </Button>
+            </Card.Footer>
+          </Card>
       </Modal>
     </Container>
   );
