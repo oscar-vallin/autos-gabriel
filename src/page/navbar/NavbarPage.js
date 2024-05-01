@@ -45,11 +45,12 @@ export const NavbarPage = () => {
     <NavbarStyled>
       <Navbar.Brand>
          <Link to="/auth">
-          <img 
+          {/* <img 
             src={logo}
             alt='logo'
             width='300'
-          />
+          /> */}
+          <h2>Global Automotriz</h2>
          </Link>
         </Navbar.Brand>
       {/* <Nav  className="mr-auto" style={{ marginLeft: '10px' }}>
