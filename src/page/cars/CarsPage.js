@@ -8,6 +8,7 @@ import {
   Button,
   Modal,
   Form,
+  Spinner,
 } from 'react-bootstrap';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -17,7 +18,7 @@ import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 
 import { collection, getDocs } from 'firebase/firestore';
 import { firestore, storage } from '../../firebase/firebase';
-import { deleteCarAndImages, editCarStore, deleteCarImages} from '../../firebase/crudFireBase';
+import { deleteCarAndImages, editCarStore, getStorageData, deleteSpecificImages} from '../../firebase/crudFireBase';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 import { useAuth } from '../../context/authContext';
@@ -32,10 +33,12 @@ const StyledForm = styled(Form)`
 
 export const CarsPage = () => {
   const [cars, setCars] = useState([]);
+
   const { currentUser } = useAuth();
   const [index, setIndex] = useState(0);
   const [uploadError, setUploadError] = useState(false);
   const [newImages, setNewImages] = useState([]);
+  const [files, setFiles] = useState([]);
   const [uploadSuccess, setUploadSuccess] = useState(false);
   const [currentRemoveCarData, setCurrentRemoveCarData] = useState({
     id: '',
@@ -62,6 +65,8 @@ export const CarsPage = () => {
     carName: '',
     price: ''
   });
+  const [showSpinner, setShowSpinner] = useState(false);
+
   const fetchCars = async () => {
     const carsCollectionRef = collection(firestore, 'cars');
     const querySnapshot = await getDocs(carsCollectionRef);
@@ -95,6 +100,7 @@ export const CarsPage = () => {
       nameDirectory: car.nameDirectory,
     });
     setCurrentEditImages(car.images);
+    setImagesNotRemoved(car.images)
   };
 
   const removeCar = async () => {
@@ -120,19 +126,37 @@ export const CarsPage = () => {
   };
 
   const handleImageChange = (e) => {
-    setNewImages([...e.target.files]);
+    setFiles([...e.target.files]);
     const newImages = Array.from(e.target.files).map((file) => ({
       ...file,
       name: file.name,
       preview: URL.createObjectURL(file),
     }));
     setCurrentEditImages((prevImages) => [...prevImages, ...newImages.map((ni) => ni.preview)]);
+    setNewImages(newImages);
   };
 
   const editCar = async () => {
+    setShowSpinner(true);
     const imageUrls = [];
-    await deleteCarImages(newEditData.nameDirectory);
-    for (const image of newImages) {
+    const storageData = await getStorageData(newEditData.nameDirectory);
+    const getImgaesRemoved = [];
+    storageData.forEach((data) => {
+      if (imagesNotRemoved.indexOf(data.url) === -1) {
+        getImgaesRemoved.push(data.names);
+      }
+    })
+    const uploadImages = [];
+    newImages.forEach((newImage) => {
+      const uploadImage = files.find((file) => file.name === newImage.name && file);
+      if(files.indexOf(uploadImage.name) === -1) {
+        uploadImages.push(uploadImage);
+      }
+
+    });
+
+    await deleteSpecificImages(getImgaesRemoved, newEditData.nameDirectory);
+    for (const image of uploadImages) {
       const imageRef = await ref(storage, `cars/${newEditData.nameDirectory}/${image.name}`);
       await uploadBytes(imageRef, image);
       const imageUrl = await getDownloadURL(imageRef);
@@ -143,11 +167,14 @@ export const CarsPage = () => {
       imageUrls.push(imageNotRemoved);
     }
     const edit = editCarStore(newEditData, imageUrls);
-    setCurrentEditImages([]);
 
     if (edit) {
-      setUploadSuccess(true)
+      setShowSpinner(false);
+      setUploadSuccess(true);
       setTimeout(async () => {
+        setCurrentEditImages([]);
+        setNewImages([]);
+        setImagesNotRemoved([]);
         const cars = await fetchCars();
         setCars(cars);
         setEditCarModal(false);
@@ -200,6 +227,7 @@ export const CarsPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       const carsData = await fetchCars();
+      console.log(carsData)
       setCars(carsData);
     };
     fetchData();
@@ -351,10 +379,16 @@ export const CarsPage = () => {
         <Modal.Header closeButton>
           <Modal.Title>Editar Vehículo</Modal.Title>
         </Modal.Header>
+        <div style={{display: 'flex', justifyContent: 'center'}}>
+          { showSpinner && <Spinner animation="border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </Spinner>}
+          </div>
           {uploadSuccess && <Message type="success">El vehículo se editó correctamente</Message>}
+          {!currentEditImages.length && <Message type="warning">Al menos debes cargar una imagén</Message>}
           <Card>
-            <Carousel activeIndex={index} onSelect={handleSelect} interval={null} >
-            {currentEditImages.map((imageCar, indexCar) => (
+            {<Carousel activeIndex={index} onSelect={handleSelect} interval={null} >
+            {!showSpinner && currentEditImages.map((imageCar, indexCar) => (
                 <Carousel.Item key={indexCar} style={{backgroundColor: '#000'}}>
                   <img
                     style={{margin: '0 auto', cursor: 'pointer'}}
@@ -368,7 +402,7 @@ export const CarsPage = () => {
                   />
                 </Carousel.Item>
               ))}
-              </Carousel>
+              </Carousel>}
             <Card.Body>
               <Card.Text>
                 <Form.Label htmlFor="carname">Nombre</Form.Label>
@@ -405,16 +439,16 @@ export const CarsPage = () => {
               </Card.Text>
             </Card.Body>
             <Card.Footer>
-            <Button onClick={editCar}>
+            {!showSpinner && <Button disabled={!currentEditImages.length} onClick={editCar}>
               Editar
-            </Button>
-            <Button
+            </Button>}
+            {!showSpinner && <Button
               variant="secondary"
               onClick={() => setEditCarModal(false)}
               style={{ marginLeft: '20px' }}
               >
               Cancelar
-            </Button>
+            </Button>}
             </Card.Footer>
           </Card>
       </Modal>
@@ -430,11 +464,12 @@ export const CarsPage = () => {
           />
         <Modal.Body>
             <Button onClick={() => {
-              
+              const removeNewImg = newImages.filter((img) => img.preview !== currentRemoveEditImg && img);
               const removeImg = currentEditImages.filter((img) => img !== currentRemoveEditImg && img);
               setRemoveImgModal(false)
               setCurrentEditImages(removeImg);
               setImagesNotRemoved(removeImg);
+              setNewImages(removeNewImg);
               // Adjust index if the current index is now out of bounds
             if (index >= setCurrentEditImages.length) {
                 setIndex(setCurrentEditImages.length - 1);

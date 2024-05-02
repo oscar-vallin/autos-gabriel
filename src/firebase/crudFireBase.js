@@ -1,5 +1,5 @@
 import { firestore, storage} from './firebase';
-import { ref, listAll, deleteObject } from 'firebase/storage';
+import { ref, listAll, deleteObject, getDownloadURL } from 'firebase/storage';
 import { doc, deleteDoc, updateDoc } from 'firebase/firestore';
 
 const deleteCar = async (carId) => {
@@ -15,6 +15,29 @@ export const deleteCarImages = async (carId, path) => {
 
   for (const itemRef of items) {
     await deleteObject(itemRef);
+  }
+};
+
+export const getStorageData = async (path) => {
+  const carImagesRef = ref(storage, `cars/${path}/`);
+  const { items } = await listAll(carImagesRef);
+  const urls = await Promise.all(items.map(async item => {
+    return {url: await getDownloadURL(item), names: item.name}
+  }));
+  return urls;
+};
+
+export const deleteSpecificImages = async (images, path) => {
+  try {
+    const deletePromises = images.map(imageName => {
+      const imageRef = ref(storage, `cars/${path}/${imageName}`);
+      return deleteObject(imageRef);
+    });
+
+    await Promise.all(deletePromises);
+    console.log('Specific images have been deleted successfully');
+  } catch (error) {
+    console.error("Error deleting specific images", error);
   }
 };
 
