@@ -9,7 +9,7 @@ const deleteCar = async (carId) => {
 
 
 
-const deleteCarImages = async (carId, path) => {
+export const deleteCarImages = async (carId, path) => {
   const carImagesRef = ref(storage, `cars/${path}/`);
   const { items } = await listAll(carImagesRef);
 
@@ -18,7 +18,7 @@ const deleteCarImages = async (carId, path) => {
   }
 };
 
-export const editCarStore = async (dataCar) => {
+export const editCarStore = async (dataCar, images) => {
   
   const documentRef = doc(firestore, "cars", dataCar.id);
   const { name, description, price } = dataCar;
@@ -27,6 +27,7 @@ export const editCarStore = async (dataCar) => {
       name,
       price,
       description, 
+      images,
     });
     return true;
   } catch (error) {

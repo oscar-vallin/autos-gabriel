@@ -34,6 +34,7 @@ const StyledInput = styled(Form.Control)`
 
 export const RegisterCarPage = () => {
   const [images, setImages] = useState([]);
+  const [index, setIndex] = useState(0);
   const [currentImgs, setCurrentImgs] = useState([]);
   const [name, setName] = useState('');
   const [nameDirectory, setNameDirectory] = useState('');
@@ -52,6 +53,10 @@ export const RegisterCarPage = () => {
       preview: URL.createObjectURL(file),
     }));
     setCurrentImgs((prevImages) => [...prevImages, ...newImages]);
+  };
+
+  const handleSelect = (selectedIndex, e) => {
+    setIndex(selectedIndex);
   };
 
   const handleUpload = async () => {
@@ -115,9 +120,11 @@ export const RegisterCarPage = () => {
   const handleRemoveImage = (name) => {
     const newImages = images.filter((image) => image.name !== name);
     const newCurrentImgd = currentImgs.filter((image) => image.name !== name);
-
     setImages(newImages);
     setCurrentImgs(newCurrentImgd);
+    if (index >= currentImgs.length) {
+      setIndex(currentImgs.length - 1);
+  }
   };
 
   useEffect(() => {
@@ -134,11 +141,11 @@ export const RegisterCarPage = () => {
     }
   }, [name, price, nameDirectory, description, images]);
 
-  useEffect(() => {
-    return () => {
-      currentImgs.forEach((image) => URL.revokeObjectURL(image.preview));
-    };
-  }, [currentImgs]);
+  // useEffect(() => {
+  //   return () => {
+  //     currentImgs.forEach((image) => URL.revokeObjectURL(image.preview));
+  //   };
+  // }, [currentImgs]);
 
   return (
     <StyledDiv>
@@ -229,7 +236,7 @@ export const RegisterCarPage = () => {
       <Col md="12" lg="6" style={{ marginTop: '20px' }}>
         <h5>Así se va mostrar el coche en la pagina principal</h5>
       <Card style={{ marginBottom: '30px' }}>
-            <Carousel>
+            <Carousel activeIndex={index} onSelect={handleSelect}>
               {currentImgs.map((imageCar, indexCar) => (
                 <Carousel.Item key={indexCar}>
                   <img

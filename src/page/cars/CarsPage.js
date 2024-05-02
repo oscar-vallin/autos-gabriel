@@ -16,8 +16,9 @@ import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
 import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 
 import { collection, getDocs } from 'firebase/firestore';
-import { firestore } from '../../firebase/firebase';
-import { deleteCarAndImages, editCarStore } from '../../firebase/crudFireBase';
+import { firestore, storage } from '../../firebase/firebase';
+import { deleteCarAndImages, editCarStore, deleteCarImages} from '../../firebase/crudFireBase';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 import { useAuth } from '../../context/authContext';
 
@@ -32,21 +33,27 @@ const StyledForm = styled(Form)`
 export const CarsPage = () => {
   const [cars, setCars] = useState([]);
   const { currentUser } = useAuth();
+  const [index, setIndex] = useState(0);
   const [uploadError, setUploadError] = useState(false);
+  const [newImages, setNewImages] = useState([]);
   const [uploadSuccess, setUploadSuccess] = useState(false);
   const [currentRemoveCarData, setCurrentRemoveCarData] = useState({
     id: '',
     path: '',
   });
-  const [currentEditImages, setCurrentEditImages] = useState([])
+  const [currentEditImages, setCurrentEditImages] = useState([]);
+  const [imagesNotRemoved, setImagesNotRemoved] = useState([]);
   const [newEditData, setNewEditData] = useState({
     name: '',
     price: '',
     description: '',
     id: '',
+    nameDirectory: '',
   })
   const [removeCarModal, setRemoveCarModal] = useState(false);
   const [editCarModal, setEditCarModal] = useState(false);
+  const [removeImgModal, setRemoveImgModal] = useState(false);
+  const [currentRemoveEditImg, setCurrentRemoveEditImg] = useState('');
 
   const [show, setShow] = useState(false);
   const [formData, setFormData] = useState({
@@ -65,6 +72,10 @@ export const CarsPage = () => {
     return cars;
   };
 
+  const handleSelect = (selectedIndex, e) => {
+    setIndex(selectedIndex);
+  };
+
   const openRemoveCarModal = async (id, path) => {
     setRemoveCarModal(true);
     setCurrentRemoveCarData({
@@ -81,6 +92,7 @@ export const CarsPage = () => {
       name: car.name,
       price: car.price,
       id: car.id,
+      nameDirectory: car.nameDirectory,
     });
     setCurrentEditImages(car.images);
   };
@@ -107,8 +119,30 @@ export const CarsPage = () => {
     }
   };
 
-  const editCar = () => {
-    const edit = editCarStore(newEditData);
+  const handleImageChange = (e) => {
+    setNewImages([...e.target.files]);
+    const newImages = Array.from(e.target.files).map((file) => ({
+      ...file,
+      name: file.name,
+      preview: URL.createObjectURL(file),
+    }));
+    setCurrentEditImages((prevImages) => [...prevImages, ...newImages.map((ni) => ni.preview)]);
+  };
+
+  const editCar = async () => {
+    const imageUrls = [];
+    await deleteCarImages(newEditData.nameDirectory);
+    for (const image of newImages) {
+      const imageRef = await ref(storage, `cars/${newEditData.nameDirectory}/${image.name}`);
+      await uploadBytes(imageRef, image);
+      const imageUrl = await getDownloadURL(imageRef);
+      imageUrls.push(imageUrl);
+    }
+
+    for (const imageNotRemoved of imagesNotRemoved) {
+      imageUrls.push(imageNotRemoved);
+    }
+    const edit = editCarStore(newEditData, imageUrls);
     setCurrentEditImages([]);
 
     if (edit) {
@@ -171,7 +205,6 @@ export const CarsPage = () => {
     fetchData();
   }, []);
 
-
   useEffect(() => {
     if (!removeCarModal){
       setCurrentRemoveCarData({
@@ -189,6 +222,10 @@ export const CarsPage = () => {
         name: '',
         price: '',
       });
+
+      setCurrentEditImages([]);
+      setNewImages([]);
+      setImagesNotRemoved([]);
     }
   }, [editCarModal]);
 
@@ -316,14 +353,18 @@ export const CarsPage = () => {
         </Modal.Header>
           {uploadSuccess && <Message type="success">El vehículo se editó correctamente</Message>}
           <Card>
-            <Carousel>
+            <Carousel activeIndex={index} onSelect={handleSelect} interval={null} >
             {currentEditImages.map((imageCar, indexCar) => (
-                <Carousel.Item key={indexCar}>
+                <Carousel.Item key={indexCar} style={{backgroundColor: '#000'}}>
                   <img
-                    style={{margin: '0 auto'}}
+                    style={{margin: '0 auto', cursor: 'pointer'}}
                     className="d-block w-50"
                     src={imageCar}
                     alt="First slide"
+                    onClick={() => {
+                      setCurrentRemoveEditImg(imageCar);
+                      setRemoveImgModal(true);
+                    }}
                   />
                 </Carousel.Item>
               ))}
@@ -354,6 +395,13 @@ export const CarsPage = () => {
                   id='cardprice'
                   onChange={(e) => setNewEditData({...newEditData,price: e.target.value})}
                   />
+                  <Form.Label>Subir Imagenes</Form.Label>
+                  <Form.Control
+                    type="file"
+                    multiple
+                    onChange={handleImageChange}
+                    style={{ marginBottom: '10px', border: '1px solid #000' }}
+                  />
               </Card.Text>
             </Card.Body>
             <Card.Footer>
@@ -369,6 +417,39 @@ export const CarsPage = () => {
             </Button>
             </Card.Footer>
           </Card>
+      </Modal>
+      <Modal show={removeImgModal} onHide={() => setRemoveImgModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>¿Estás qué quieres eliminar está imagen?</Modal.Title>
+        </Modal.Header>
+          <img
+            style={{margin: '0 auto', cursor: 'pointer'}}
+            className="d-block w-50"
+            src={currentRemoveEditImg}
+            alt="First slide"
+          />
+        <Modal.Body>
+            <Button onClick={() => {
+              
+              const removeImg = currentEditImages.filter((img) => img !== currentRemoveEditImg && img);
+              setRemoveImgModal(false)
+              setCurrentEditImages(removeImg);
+              setImagesNotRemoved(removeImg);
+              // Adjust index if the current index is now out of bounds
+            if (index >= setCurrentEditImages.length) {
+                setIndex(setCurrentEditImages.length - 1);
+            }
+            }}>
+              Eliminar
+            </Button>
+            <Button
+              variant="secondary"
+              onClick={() => setRemoveImgModal(false)}
+              style={{ marginLeft: '20px' }}
+            >
+              Cancelar
+            </Button>
+        </Modal.Body>
       </Modal>
     </Container>
   );
