@@ -4,16 +4,13 @@ import styled from 'styled-components';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
+import { motion } from 'framer-motion';
 
 const Section = styled.section`
   padding: 40px 0;
   text-align: center;
 `;
 
-const MainText = styled.h2`
-  margin-bottom: 20px;
-  font-size: 3rem;
-`;
 
 const SubText = styled.p`
   margin-bottom: 30px;
@@ -37,7 +34,16 @@ export const ContactUsPage = () => {
       <Container>
         <Row>
           <Col>
-            <MainText>Contáctanos</MainText>
+            <motion.div
+              initial={{ opacity: 0, y: 100 }}
+              whileInView={{ opacity: 10, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1.5 }}
+            >
+            <h2 style={{ textAlign: 'center', fontWeight: 'bold', fontSize: '3rem', letterSpacing: '3px', marginBottom: '40px' }}>
+            Contáctanos
+            </h2>
+            </motion.div>
             <SubText>
               Si deseas atención personalizada o tienes alguna pregunta, no dudes en contactarnos.
             </SubText>

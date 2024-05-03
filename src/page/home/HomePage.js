@@ -17,7 +17,7 @@ export const HomePage = () => {
       <Helmet>
       <title>Global Automotriz - Encuentra tu coche ideal</title>
         <meta name="description" content="Explora nuestra amplia selección de coches. Encuentra ofertas en coches nuevos y usados en Global Automotriz." />
-        <meta name="keywords" content="coches, venta de coches, coches usados, coches nuevos" />
+        <meta name="keywords" content="coches, venta de coches, coches usados, coches nuevos en Global Automotriz" />
       </Helmet>
       <Suspense  fallback={<div  style={{ display: 'flex', justifyContent: 'center', marginTop: '50px' }}>
         <Spinner

@@ -24,6 +24,7 @@ import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { useAuth } from '../../context/authContext';
 
 import { Message } from '../../components/message/Message';
+import { motion } from 'framer-motion';
 
 import styled from 'styled-components';
 
@@ -261,9 +262,21 @@ export const CarsPage = () => {
     <Container>
       {uploadError && <Message type="error">Hubo un error al eliminar el vehículo</Message>}
       <Row>
+        <motion.div
+          initial={{ opacity: 0, y: 100 }}
+          whileInView={{ opacity: 10, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1.5 }}
+        >
+        <h2 style={{ textAlign: 'center', fontWeight: 'bold', fontSize: '3rem', letterSpacing: '3px', marginBottom: '40px' }}>
+          Nuestros Coches
+        </h2>
+        </motion.div>
+      </Row>
+      <Row>
         {cars.map((car, index) => (
           <Col md="12" lg="6" key={index}>
-            <Card style={{ marginBottom: '30px' }}>
+            <Card style={{ marginBottom: '50px', borderRadius: '20px', boxShadow: '0 4px 8px #666666' }}>
             <Carousel>
               {car.images.map((imageCar, indexCar) => (
                 <Carousel.Item key={indexCar}>
@@ -271,6 +284,7 @@ export const CarsPage = () => {
                     className="d-block w-100"
                     src={imageCar}
                     alt="First slide"
+                    style={{ borderTopLeftRadius: '20px', borderTopRightRadius: '20px' }}
                   />
                 </Carousel.Item>
               ))}
@@ -278,7 +292,7 @@ export const CarsPage = () => {
             <Card.Body>
               <Card.Title><i className="fa fa-car" style={{ marginRight: '5px' }}></i>{car.name} </Card.Title>
               <Card.Text>
-                <p>{car.description}</p>
+                <p><i className="fa fa-info-circle" style={{marginRight: '5px'}}></i>{car.description}</p>
                 <p> <FontAwesomeIcon icon={faDollarSign} /> {car.price}</p>
               </Card.Text>
             </Card.Body>

@@ -16,6 +16,7 @@ import { LocationPage } from './page/location/Location';
 import { NotFoundPage } from './page/notFoundPage/NotFoundPage';
 
 import ProtectedRoute from './protectRoute/ProtectRoute';
+import { ScrollTop } from './components/scrollTop/ScrollTop';
 
 const MainPage = () => {
   return (
@@ -38,6 +39,7 @@ const MainPage = () => {
 function App() {
   return (
     <Router>
+      <ScrollTop />
       <Routes>
         <Route path='/' element={<MainPage />} />
         <Route path='/auth' element={<SignUpPage />}/>

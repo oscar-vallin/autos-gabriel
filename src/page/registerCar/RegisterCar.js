@@ -71,8 +71,6 @@ export const RegisterCarPage = () => {
         const imageUrl = await getDownloadURL(imageRef);
         imageUrls.push(imageUrl);
       }
-
-
       
       // Save the car data to Firestore
       const carDoc = {
@@ -119,12 +117,12 @@ export const RegisterCarPage = () => {
 
   const handleRemoveImage = (name) => {
     const newImages = images.filter((image) => image.name !== name);
-    const newCurrentImgd = currentImgs.filter((image) => image.name !== name);
+    const newCurrentImg = currentImgs.filter((image) => image.name !== name);
     setImages(newImages);
-    setCurrentImgs(newCurrentImgd);
+    setCurrentImgs(newCurrentImg);
     if (index >= currentImgs.length) {
       setIndex(currentImgs.length - 1);
-  }
+    }
   };
 
   useEffect(() => {
@@ -250,7 +248,7 @@ export const RegisterCarPage = () => {
             <Card.Body>
               <Card.Title><i className="fa fa-car" style={{ marginRight: '5px' }}></i>{name} </Card.Title>
               <Card.Text>
-                <p>{description}</p>
+                <p> <i className="fa fa-info-circle" style={{ marginRight: '5px' }}></i>{description}</p>
                 <p> <FontAwesomeIcon icon={faDollarSign} /> {price}</p>
               </Card.Text>
             </Card.Body>
