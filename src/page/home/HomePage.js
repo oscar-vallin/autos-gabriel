@@ -4,7 +4,7 @@ import {
   HomeContainer, OverlayText,
 } from './home.styles';
 import { motion } from 'framer-motion';
-import { Button, Spinner } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 import styled, { keyframes } from 'styled-components';
