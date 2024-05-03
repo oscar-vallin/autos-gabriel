@@ -7,8 +7,28 @@ import { motion } from 'framer-motion';
 import { Button, Spinner } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
+import styled, { keyframes } from 'styled-components';
 
 const MainImage = React.lazy(() => import('../../components/mainImages/MainImages'));
+
+
+const spin = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+`;
+
+const StyledSpinner = styled.div`
+  border: 16px solid #f3f3f3; /* Light grey background */
+  border-top: 16px solid #000; /* Blue color */
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: ${spin} 2s linear infinite;
+`;
 
 export const HomePage = () => {
   const whatsappNumber = process.env.REACT_APP_NUMBER
@@ -20,7 +40,7 @@ export const HomePage = () => {
         <meta name="keywords" content="coches, venta de coches, coches usados, coches nuevos en Global Automotriz" />
       </Helmet>
       <Suspense  fallback={<div  style={{ display: 'flex', justifyContent: 'center', marginTop: '50px' }}>
-        <Spinner
+        <StyledSpinner
           style={{ 
             color: 'blue',
             fontSize: '100px',
@@ -31,7 +51,7 @@ export const HomePage = () => {
             role="status"
           >
           <span className="visually-hidden">Loading...</span>
-        </Spinner>
+        </StyledSpinner>
       </div>}>
         <MainImage />
       </Suspense>
