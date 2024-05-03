@@ -45,7 +45,10 @@ export const ContactUsPage = () => {
             </h2>
             </motion.div>
             <SubText>
-              Si deseas atención personalizada o tienes alguna pregunta, no dudes en contactarnos.
+              Si deseas atención personalizada o tienes alguna pregunta, en  {' '}
+                <span >
+                  Global Automotriz,
+                </span> no dudes en contactarnos.
             </SubText>
             <ContactButton href={`https://wa.me/${whatsappNumber}`} target="_blank">
               Contáctanos

@@ -37,6 +37,12 @@ export const HomePage = () => {
       </Suspense>
       <OverlayText>
         <h1>Encuentra tu vehículo <br></br>Perfecto</h1>
+        <motion.h4
+           initial={{ opacity: 0, y: -60 }}
+           whileInView={{ opacity: 1, y: 0 }}
+           viewport={{ once: true }}
+           transition={{ duration: 1.5 }}
+        >En Global Automotriz</motion.h4>
         <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}

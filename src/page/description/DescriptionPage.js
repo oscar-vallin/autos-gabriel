@@ -18,7 +18,7 @@ export const DescriptionPage = () => {
           </h2>
         </motion.div>
         <p style={{ textAlign: 'center', fontWeight: '600', fontSize: '1.5rem' }}>
-          Nuestra venta de coches ofrece lo siguiente:
+          De comprar en <span>Global Automotriz</span>:
         </p>
       </Row>
       <Row style={{ marginTop: '30px' }}>

@@ -23,8 +23,18 @@ export const OverlayText = styled.div`
     color: white;
   }
 
+  h4 {
+    position: relative;
+    color: white;
+    letter-spacing: 3px;
+    top: 50px;
+    font-weight: 700;
+  }
+
   p {
+    position: relative;
     font-size: 1.5rem;
+    bottom: 30px;
     color: white;
     letter-spacing: 3px;
     font-weight: bold;
