@@ -24,8 +24,8 @@ export const DescriptionPage = () => {
       <Row style={{ marginTop: '30px' }}>
         <Col md="12" lg="6" style={{ marginBottom: '30px' }}>
           <motion.div
-            initial={{ opacity: 0, x: -100 }} // Start from the right
-            whileInView={{ opacity: 1, x: 0 }} // Animate to the original position
+            initial={{ opacity: 0, y: -100 }} // Start from the right
+            whileInView={{ opacity: 1, y: 0 }} // Animate to the original position
             viewport={{ once: true }}
             transition={{ duration: 2 }} // Increase the duration for a slower animation
           >
@@ -41,8 +41,8 @@ export const DescriptionPage = () => {
         </Col>
         <Col Col md="12" lg="6" style={{ marginBottom: '30px' }}>
           <motion.div
-              initial={{ opacity: 0, x: 100 }} // Start from the right
-              whileInView={{ opacity: 1, x: 0 }} // Animate to the original position
+              initial={{ opacity: 0, y: 100 }} // Start from the right
+              whileInView={{ opacity: 1, y: 0 }} // Animate to the original position
               viewport={{ once: true }}
               transition={{ duration: 2 }} // Increase the duration for a slower animation
             >
@@ -58,8 +58,8 @@ export const DescriptionPage = () => {
       <Row>
         <Col Col md="12" lg="6" style={{ marginBottom: '30px' }}>
           <motion.div
-              initial={{ opacity: 0, x: -100 }} // Start from the right
-              whileInView={{ opacity: 1, x: 0 }} // Animate to the original position
+              initial={{ opacity: 0, y: -100 }} // Start from the right
+              whileInView={{ opacity: 1, y: 0 }} // Animate to the original position
               viewport={{ once: true }}
               transition={{ duration: 2 }} // Increase the duration for a slower animation
             >
@@ -73,8 +73,8 @@ export const DescriptionPage = () => {
         </Col>
         <Col Col md="12" lg="6">
           <motion.div
-            initial={{ opacity: 0, x: 100 }} // Start from the right
-            whileInView={{ opacity: 1, x: 0 }} // Animate to the original position
+            initial={{ opacity: 0, y: 100 }} // Start from the right
+            whileInView={{ opacity: 1, y: 0 }} // Animate to the original position
             viewport={{ once: true }}
             transition={{ duration: 2 }} // Increase the duration for a slower animation
           >
