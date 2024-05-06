@@ -44,11 +44,9 @@ export const SignUpPage = () => {
     // Handle form submission here
     const { password, username } = formData;
       const statusUser = await singin(username, password);
-      console.log("STATUS ", statusUser)
       if (statusUser) {
         setErrMsg("");
       } else {
-        console.log("WHY")
         setErrMsg("Las credenciales son incorrectas");
       }
 

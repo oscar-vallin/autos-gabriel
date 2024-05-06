@@ -238,7 +238,6 @@ export const CarsPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       const carsData = await fetchCars();
-      console.log(carsData)
       setCars(carsData);
     };
     fetchData();
@@ -289,7 +288,7 @@ export const CarsPage = () => {
             <Card style={{ marginBottom: '50px', borderRadius: '20px', boxShadow: '0 4px 8px #666666' }}>
             <Carousel prevIcon={carouselArrows('prev')} nextIcon={carouselArrows('next')} activeIndex={mainIndex} onSelect={mainHandleSelect} >
               {car.images.map((imageCar, indexCar) => (
-                <Carousel.Item key={indexCar}>
+                <Carousel.Item key={imageCar.id}>
                   <img
                     className="d-block w-100"
                     src={imageCar}
