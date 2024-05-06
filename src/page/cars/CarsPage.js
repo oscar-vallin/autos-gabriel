@@ -82,6 +82,72 @@ export const CarsPage = () => {
     return cars;
   };
 
+  const renderCard = () => {
+    if (cars.length) {
+      return (
+        <Row>
+        {cars.map((car, index) => (
+          <Col md="12" lg="6" key={index}>
+            <Card style={{ marginBottom: '50px', borderRadius: '20px', boxShadow: '0 4px 8px #666666' }}>
+            <Carousel prevIcon={carouselArrows('prev')} nextIcon={carouselArrows('next')} activeIndex={mainIndex} onSelect={mainHandleSelect} >
+              {car.images.map((imageCar, indexCar) => (
+                <Carousel.Item key={imageCar.id}>
+                  <img
+                    className="d-block w-100"
+                    src={imageCar}
+                    alt="First slide"
+                    style={{ borderTopLeftRadius: '20px', borderTopRightRadius: '20px', cursor: 'pointer' }}
+                    onClick={() => {
+                      setCurrentFullImg(imageCar);
+                      setViewFullImgModal(true);
+                    }}
+                  />
+                </Carousel.Item>
+              ))}
+            </Carousel>
+            <Card.Body>
+              <Card.Title><i className="fa fa-car" style={{ marginRight: '5px' }}></i>{car.name} </Card.Title>
+              <Card.Text>
+                <p><i className="fa fa-info-circle" style={{marginRight: '5px'}}></i>{car.description}</p>
+                <p> <FontAwesomeIcon icon={faDollarSign} /> {car.price}</p>
+              </Card.Text>
+            </Card.Body>
+            <Button
+              style={{ margin: '0 auto', marginBottom: '20px', fontWeight: '400' }}
+              variant="info"
+              onClick={() => handleShow(car.name, car.price)}
+            >
+              Estoy Interesado
+              <i className="fa fa-phone" style={{ marginLeft: '10px' }}></i> 
+            </Button>
+            <div style={{display: 'flex'}}>
+            {currentUser && <Button
+              variant="danger"
+              style={{ margin: '0 auto', marginBottom: '20px', fontWeight: '400' }}
+              onClick={() => openRemoveCarModal(car.id, car.nameDirectory)}
+            >
+              Borrar
+              <FontAwesomeIcon icon={faTrash} style={{ marginLeft: '10px' }}/>
+            </Button>}
+            {currentUser && <Button
+              variant="secondary"
+              style={{ margin: '0 auto', marginBottom: '20px', fontWeight: '400' }}
+              onClick={() => openEditCarModal(car)}
+            >
+              Editar
+              <FontAwesomeIcon icon={faEdit} style={{ marginLeft: '10px' }}/>
+            </Button>}
+            </div>
+            </Card>
+          </Col>
+        ))}
+      </Row>
+      )
+    }
+
+    return null;
+  }
+
   const mainHandleSelect = (selectedIndex, e) => {
     setMainIndex(selectedIndex);
   };
@@ -282,63 +348,7 @@ export const CarsPage = () => {
         </h2>
         </motion.div>
       </Row>
-      <Row>
-        {cars.map((car, index) => (
-          <Col md="12" lg="6" key={index}>
-            <Card style={{ marginBottom: '50px', borderRadius: '20px', boxShadow: '0 4px 8px #666666' }}>
-            <Carousel prevIcon={carouselArrows('prev')} nextIcon={carouselArrows('next')} activeIndex={mainIndex} onSelect={mainHandleSelect} >
-              {car.images.map((imageCar, indexCar) => (
-                <Carousel.Item key={imageCar.id}>
-                  <img
-                    className="d-block w-100"
-                    src={imageCar}
-                    alt="First slide"
-                    style={{ borderTopLeftRadius: '20px', borderTopRightRadius: '20px', cursor: 'pointer' }}
-                    onClick={() => {
-                      setCurrentFullImg(imageCar);
-                      setViewFullImgModal(true);
-                    }}
-                  />
-                </Carousel.Item>
-              ))}
-            </Carousel>
-            <Card.Body>
-              <Card.Title><i className="fa fa-car" style={{ marginRight: '5px' }}></i>{car.name} </Card.Title>
-              <Card.Text>
-                <p><i className="fa fa-info-circle" style={{marginRight: '5px'}}></i>{car.description}</p>
-                <p> <FontAwesomeIcon icon={faDollarSign} /> {car.price}</p>
-              </Card.Text>
-            </Card.Body>
-            <Button
-              style={{ margin: '0 auto', marginBottom: '20px', fontWeight: '400' }}
-              variant="info"
-              onClick={() => handleShow(car.name, car.price)}
-            >
-              Estoy Interesado
-              <i className="fa fa-phone" style={{ marginLeft: '10px' }}></i> 
-            </Button>
-            <div style={{display: 'flex'}}>
-            {currentUser && <Button
-              variant="danger"
-              style={{ margin: '0 auto', marginBottom: '20px', fontWeight: '400' }}
-              onClick={() => openRemoveCarModal(car.id, car.nameDirectory)}
-            >
-              Borrar
-              <FontAwesomeIcon icon={faTrash} style={{ marginLeft: '10px' }}/>
-            </Button>}
-            {currentUser && <Button
-              variant="secondary"
-              style={{ margin: '0 auto', marginBottom: '20px', fontWeight: '400' }}
-              onClick={() => openEditCarModal(car)}
-            >
-              Editar
-              <FontAwesomeIcon icon={faEdit} style={{ marginLeft: '10px' }}/>
-            </Button>}
-            </div>
-            </Card>
-          </Col>
-        ))}
-      </Row>
+      {renderCard()}
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Información del Usuario</Modal.Title>
