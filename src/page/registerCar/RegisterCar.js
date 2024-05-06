@@ -116,12 +116,12 @@ export const RegisterCarPage = () => {
   };
 
   const handleRemoveImage = (name) => {
-    const newImages = images.filter((image) => image.name !== name);
-    const newCurrentImg = currentImgs.filter((image) => image.name !== name);
+    const newImages = images.filter((image) => image.name !== name && image);
+    const newCurrentImg = currentImgs.filter((image) => image.name !== name && image);
     setImages(newImages);
     setCurrentImgs(newCurrentImg);
-    if (index >= currentImgs.length) {
-      setIndex(currentImgs.length - 1);
+    if (index >= setCurrentImgs.length) {
+      setIndex(setCurrentImgs.length - 1);
     }
   };
 
@@ -138,12 +138,6 @@ export const RegisterCarPage = () => {
       setFilesCompleted(false)
     }
   }, [name, price, nameDirectory, description, images]);
-
-  // useEffect(() => {
-  //   return () => {
-  //     currentImgs.forEach((image) => URL.revokeObjectURL(image.preview));
-  //   };
-  // }, [currentImgs]);
 
   return (
     <StyledDiv>
@@ -233,7 +227,7 @@ export const RegisterCarPage = () => {
       </Col>
       <Col md="12" lg="6" style={{ marginTop: '20px' }}>
         <h5>Así se va mostrar el coche en la pagina principal</h5>
-      <Card style={{ marginBottom: '30px' }}>
+      <Card style={{ marginBottom: '30px', borderRadius: '20px', boxShadow: '0 4px 8px #666666' }}>
             <Carousel activeIndex={index} onSelect={handleSelect}>
               {currentImgs.map((imageCar, indexCar) => (
                 <Carousel.Item key={indexCar}>

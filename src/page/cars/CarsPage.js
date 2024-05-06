@@ -10,7 +10,7 @@ import {
   Form,
   Spinner,
 } from 'react-bootstrap';
-
+import { CarouselItemStyled } from './cars.style';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDollarSign } from '@fortawesome/free-solid-svg-icons';
 import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
@@ -37,6 +37,7 @@ export const CarsPage = () => {
 
   const { currentUser } = useAuth();
   const [index, setIndex] = useState(0);
+  const [mainIndex, setMainIndex] = useState(0)
   const [uploadError, setUploadError] = useState(false);
   const [newImages, setNewImages] = useState([]);
   const [files, setFiles] = useState([]);
@@ -76,6 +77,10 @@ export const CarsPage = () => {
       ...doc.data(),
     }));
     return cars;
+  };
+
+  const mainHandleSelect = (selectedIndex, e) => {
+    setMainIndex(selectedIndex);
   };
 
   const handleSelect = (selectedIndex, e) => {
@@ -225,6 +230,8 @@ export const CarsPage = () => {
 
   };
 
+  const carouselArrows = () => <CarouselItemStyled className="carousel-control-next-icon" />
+
   useEffect(() => {
     const fetchData = async () => {
       const carsData = await fetchCars();
@@ -277,7 +284,7 @@ export const CarsPage = () => {
         {cars.map((car, index) => (
           <Col md="12" lg="6" key={index}>
             <Card style={{ marginBottom: '50px', borderRadius: '20px', boxShadow: '0 4px 8px #666666' }}>
-            <Carousel>
+            <Carousel prevIcon={carouselArrows()} nextIcon={carouselArrows()} activeIndex={mainIndex} onSelect={mainHandleSelect} >
               {car.images.map((imageCar, indexCar) => (
                 <Carousel.Item key={indexCar}>
                   <img
@@ -485,9 +492,12 @@ export const CarsPage = () => {
               setImagesNotRemoved(removeImg);
               setNewImages(removeNewImg);
               // Adjust index if the current index is now out of bounds
-            if (index >= setCurrentEditImages.length) {
-                setIndex(setCurrentEditImages.length - 1);
-            }
+              if (index >= setCurrentEditImages.length) {
+                  setIndex(setCurrentEditImages.length - 1);
+              }
+              if (mainIndex >= setCurrentEditImages.length) {
+                setMainIndex(setCurrentEditImages.length - 1);
+              }
             }}>
               Eliminar
             </Button>
