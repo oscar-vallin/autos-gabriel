@@ -141,7 +141,7 @@ export const RegisterCarPage = () => {
 
   return (
     <StyledDiv>
-      {!uploadSuccess && !uploading && <Message type="info">Todos los campos son obligatorios</Message>}
+      {!uploadSuccess && !uploading && disableUpload() && <Message type="info">Todos los campos son obligatorios</Message>}
       {uploadSuccess && <Message type="success">Los datos se subieron correctamente</Message>}
       {uploadError && <Message type="error">Hubo un error al subir la información!</Message>}
       <div style={{ display: 'flex', justifyContent: 'center' }}>
