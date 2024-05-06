@@ -9,6 +9,7 @@ import {
   Modal,
   Form,
   Spinner,
+  ModalBody,
 } from 'react-bootstrap';
 import { CarouselItemStyled } from './cars.style';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -68,6 +69,8 @@ export const CarsPage = () => {
     price: ''
   });
   const [showSpinner, setShowSpinner] = useState(false);
+  const [viewFullImgModal, setViewFullImgModal] = useState(false);
+  const [currentFullImg, setCurrentFullImg] = useState('');
 
   const fetchCars = async () => {
     const carsCollectionRef = collection(firestore, 'cars');
@@ -230,7 +233,7 @@ export const CarsPage = () => {
 
   };
 
-  const carouselArrows = () => <CarouselItemStyled className="carousel-control-next-icon" />
+  const carouselArrows = (typeIcon) => <CarouselItemStyled className={`carousel-control-${typeIcon}-icon`} />
 
   useEffect(() => {
     const fetchData = async () => {
@@ -284,14 +287,18 @@ export const CarsPage = () => {
         {cars.map((car, index) => (
           <Col md="12" lg="6" key={index}>
             <Card style={{ marginBottom: '50px', borderRadius: '20px', boxShadow: '0 4px 8px #666666' }}>
-            <Carousel prevIcon={carouselArrows()} nextIcon={carouselArrows()} activeIndex={mainIndex} onSelect={mainHandleSelect} >
+            <Carousel prevIcon={carouselArrows('prev')} nextIcon={carouselArrows('next')} activeIndex={mainIndex} onSelect={mainHandleSelect} >
               {car.images.map((imageCar, indexCar) => (
                 <Carousel.Item key={indexCar}>
                   <img
                     className="d-block w-100"
                     src={imageCar}
                     alt="First slide"
-                    style={{ borderTopLeftRadius: '20px', borderTopRightRadius: '20px' }}
+                    style={{ borderTopLeftRadius: '20px', borderTopRightRadius: '20px', cursor: 'pointer' }}
+                    onClick={() => {
+                      setCurrentFullImg(imageCar);
+                      setViewFullImgModal(true);
+                    }}
                   />
                 </Carousel.Item>
               ))}
@@ -509,6 +516,25 @@ export const CarsPage = () => {
               Cancelar
             </Button>
         </Modal.Body>
+      </Modal>
+      <Modal show={viewFullImgModal} onHide={() => setViewFullImgModal(false)}>
+        <Modal.Header closeButton></Modal.Header>
+        <ModalBody  style={{margin: '0 auto'}}>
+          <img 
+            src={currentFullImg}
+            alt='img'
+            style={{width: '100%', height: '400px', borderRadius: '10px'}}
+          />
+        </ModalBody>
+        <Modal.Footer>
+          <Button
+            variant="secondary"
+            onClick={() => setViewFullImgModal(false)}
+            style={{ marginLeft: '20px' }}
+          >
+            Cancelar
+          </Button>
+        </Modal.Footer>
       </Modal>
     </Container>
   );
