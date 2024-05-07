@@ -34,10 +34,8 @@ const StyledInput = styled(Form.Control)`
 
 export const RegisterCarPage = () => {
   const [images, setImages] = useState([]);
-  const [index, setIndex] = useState(0);
   const [currentImgs, setCurrentImgs] = useState([]);
   const [name, setName] = useState('');
-  const [nameDirectory, setNameDirectory] = useState('');
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
   const [uploading, setUploading] = useState(false);
@@ -55,10 +53,6 @@ export const RegisterCarPage = () => {
     setCurrentImgs((prevImages) => [...prevImages, ...newImages]);
   };
 
-  const handleSelect = (selectedIndex, e) => {
-    setIndex(selectedIndex);
-  };
-
   const handleUpload = async () => {
     setUploading(true);
     const imageUrls = [];
@@ -66,7 +60,7 @@ export const RegisterCarPage = () => {
     // const userId = uuidv4();
     try {
       for (const image of images) {
-        const imageRef = await ref(storage, `cars/${nameDirectory}_${randomNum}/${image.name}`);
+        const imageRef = await ref(storage, `cars/${name}_${randomNum}/${image.name}`);
         await uploadBytes(imageRef, image);
         const imageUrl = await getDownloadURL(imageRef);
         imageUrls.push(imageUrl);
@@ -78,7 +72,7 @@ export const RegisterCarPage = () => {
         price: price,
         description: description,
         images: imageUrls,
-        nameDirectory: `${nameDirectory}_${randomNum}`,
+        nameDirectory: `${name}_${randomNum}`,
       };
       
       await addDoc(collection(firestore, `cars/`), carDoc);
@@ -92,7 +86,6 @@ export const RegisterCarPage = () => {
       setImages([]);
       setCurrentImgs([]);
       setName('');
-      setNameDirectory('');
       setDescription('');
       setPrice('');
 
@@ -120,9 +113,6 @@ export const RegisterCarPage = () => {
     const newCurrentImg = currentImgs.filter((image) => image.name !== name && image);
     setImages(newImages);
     setCurrentImgs(newCurrentImg);
-    if (index >= setCurrentImgs.length) {
-      setIndex(setCurrentImgs.length - 1);
-    }
   };
 
   useEffect(() => {
@@ -130,14 +120,13 @@ export const RegisterCarPage = () => {
       name.trim() !== '' &&
       price.trim() !== '' &&
       description.trim() !== '' &&
-      nameDirectory.trim() !== '' &&
       images.length
     ) {
       setFilesCompleted(true)
     } else {
       setFilesCompleted(false)
     }
-  }, [name, price, nameDirectory, description, images]);
+  }, [name, price, description, images]);
 
   return (
     <StyledDiv>
@@ -174,13 +163,6 @@ export const RegisterCarPage = () => {
           placeholder="Precio"
           value={price}
           onChange={(e) => setPrice(e.target.value)}
-        />
-        <Form.Label>Nombre del directorio</Form.Label>
-          <StyledInput
-          type="text"
-          placeholder="Nombre del directorio"
-          value={nameDirectory}
-          onChange={(e) => setNameDirectory(e.target.value)}
         />
         <Form.Label>Descripción del vehículo</Form.Label>
         <Form.Control
@@ -228,7 +210,7 @@ export const RegisterCarPage = () => {
       <Col md="12" lg="6" style={{ marginTop: '20px' }}>
         <h5>Así se va mostrar el coche en la pagina principal</h5>
       <Card style={{ marginBottom: '30px', borderRadius: '20px', boxShadow: '0 4px 8px #666666' }}>
-            <Carousel activeIndex={index} onSelect={handleSelect}>
+            <Carousel >
               {currentImgs.map((imageCar, indexCar) => (
                 <Carousel.Item key={indexCar}>
                   <img

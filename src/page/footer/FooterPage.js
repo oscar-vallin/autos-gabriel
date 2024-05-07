@@ -37,7 +37,10 @@ export const  FooterPage = () => {
                 <FontAwesomeIcon icon={faEnvelope} style={{ marginLeft: '10px' }}/> {process.env.REACT_APP_USER_EMAIL}
               </p>
               <p>
-                Esta página web fue creada por <a href="https://www.quantum3digit.com" target="_blank" rel="noopener noreferrer">quantum3digit</a>
+                Esta página web fue creada por <a href="https://www.vallindigital.com" target="_blank" rel="noopener noreferrer">Vallin Digital</a>
+              </p>
+              <p>
+                En colaboración con <a href="https://www.quantum3digit.com" target="_blank" rel="noopener noreferrer">quantum3digit</a>
               </p>
             </FooterContent>
           </Col>

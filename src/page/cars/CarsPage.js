@@ -37,8 +37,6 @@ export const CarsPage = () => {
   const [cars, setCars] = useState([]);
 
   const { currentUser } = useAuth();
-  const [index, setIndex] = useState(0);
-  const [mainIndex, setMainIndex] = useState(0)
   const [uploadError, setUploadError] = useState(false);
   const [newImages, setNewImages] = useState([]);
   const [files, setFiles] = useState([]);
@@ -79,6 +77,7 @@ export const CarsPage = () => {
       id: doc.id,
       ...doc.data(),
     }));
+    console.log(cars)
     return cars;
   };
 
@@ -89,7 +88,7 @@ export const CarsPage = () => {
         {cars.map((car, index) => (
           <Col md="12" lg="6" key={index}>
             <Card style={{ marginBottom: '50px', borderRadius: '20px', boxShadow: '0 4px 8px #666666' }}>
-            <Carousel prevIcon={carouselArrows('prev')} nextIcon={carouselArrows('next')} activeIndex={mainIndex} onSelect={mainHandleSelect} >
+            <Carousel prevIcon={carouselArrows('prev')} nextIcon={carouselArrows('next')}  >
               {car.images.map((imageCar, indexCar) => (
                 <Carousel.Item key={imageCar.id}>
                   <img
@@ -148,14 +147,7 @@ export const CarsPage = () => {
     return null;
   }
 
-  const mainHandleSelect = (selectedIndex, e) => {
-    setMainIndex(selectedIndex);
-  };
-
-  const handleSelect = (selectedIndex, e) => {
-    setIndex(selectedIndex);
-  };
-
+ 
   const openRemoveCarModal = async (id, path) => {
     setRemoveCarModal(true);
     setCurrentRemoveCarData({
@@ -424,7 +416,7 @@ export const CarsPage = () => {
           {uploadSuccess && <Message type="success">El vehículo se editó correctamente</Message>}
           {!currentEditImages.length && <Message type="warning">Al menos debes cargar una imagén</Message>}
           <Card>
-            {<Carousel activeIndex={index} onSelect={handleSelect} interval={null} >
+            {<Carousel interval={null} >
             {!showSpinner && currentEditImages.map((imageCar, indexCar) => (
                 <Carousel.Item key={indexCar} style={{backgroundColor: '#000'}}>
                   <img
@@ -508,12 +500,6 @@ export const CarsPage = () => {
               setImagesNotRemoved(removeImg);
               setNewImages(removeNewImg);
               // Adjust index if the current index is now out of bounds
-              if (index >= setCurrentEditImages.length) {
-                  setIndex(setCurrentEditImages.length - 1);
-              }
-              if (mainIndex >= setCurrentEditImages.length) {
-                setMainIndex(setCurrentEditImages.length - 1);
-              }
             }}>
               Eliminar
             </Button>
