@@ -95,7 +95,7 @@ export const CarsPage = () => {
                     className="d-block w-100"
                     src={imageCar}
                     alt="First slide"
-                    style={{ borderTopLeftRadius: '20px', borderTopRightRadius: '20px', cursor: 'pointer' }}
+                    style={{ borderTopLeftRadius: '20px', borderTopRightRadius: '20px', cursor: 'pointer', maxHeight: '400px' }}
                     onClick={() => {
                       setCurrentFullImg(imageCar);
                       setViewFullImgModal(true);
@@ -181,10 +181,7 @@ export const CarsPage = () => {
     if (removedCar) {
       setUploadSuccess(true)
       setTimeout(async () => {
-        const cars = await fetchCars();
-        setCars(cars);
-        setRemoveCarModal(false);
-        setUploadSuccess(false);
+        window.location.reload();
       }, 2000)
     } else {
       setUploadError(true);
@@ -239,13 +236,7 @@ export const CarsPage = () => {
       setShowSpinner(false);
       setUploadSuccess(true);
       setTimeout(async () => {
-        setCurrentEditImages([]);
-        setNewImages([]);
-        setImagesNotRemoved([]);
-        const cars = await fetchCars();
-        setCars(cars);
-        setEditCarModal(false);
-        setUploadSuccess(false);
+        window.location.reload();
       }, 2000)
     } else {
       setUploadError(true);
