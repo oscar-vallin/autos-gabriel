@@ -182,7 +182,7 @@ export const CarsPage = () => {
       setUploadSuccess(true)
       setTimeout(async () => {
         window.location.reload();
-      }, 2000)
+      }, 1500);
     } else {
       setUploadError(true);
       setRemoveCarModal(false);
@@ -237,7 +237,7 @@ export const CarsPage = () => {
       setUploadSuccess(true);
       setTimeout(async () => {
         window.location.reload();
-      }, 2000)
+      }, 1500)
     } else {
       setUploadError(true);
       setEditCarModal(false);
